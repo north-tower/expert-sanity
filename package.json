@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.5",
     "@sanity/image-url": "^1.0.2",
     "@sanity/react-loader": "^1.10.4",
     "@sanity/vision": "^3.51.0",
