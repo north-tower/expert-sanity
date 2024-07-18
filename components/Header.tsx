@@ -17,7 +17,15 @@ function Header() {
                 />
             
             </Link>
+            <h1>Mhki</h1>
 
+        </div>
+        <div>
+            <Link href={"/"}
+            className='px-5 py-3 text-sm md:text-base bg-gray-900 text-[#F7AB0A] 
+            flex items-center rounded-full text-center' >
+                Sign Up
+            </Link>
         </div>
 
     </header>
