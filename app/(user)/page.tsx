@@ -15,7 +15,7 @@ export default async function Home() {
   let posts = [];
   try {
     posts = await client.fetch(query);
-    console.log(posts);
+    // console.log(posts);
   } catch (error) {
     console.error("Failed to fetch posts:", error);
   }
