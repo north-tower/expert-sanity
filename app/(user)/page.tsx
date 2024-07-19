@@ -82,7 +82,7 @@ export default function Home() {
     {/* <section className='snap-center'>
       <Header2 />
     </section> */}
- 
+
     <section className='snap-center'>
         <Landing />
     </section>

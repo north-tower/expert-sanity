@@ -1,9 +1,44 @@
+"use client"
 
-  import { Button } from "@/components/ui/button"
-  import Link from "next/link";
+import { client } from "@/lib/sanity.client";
+import { groq } from "next-sanity";
+import { Button } from "@/components/ui/button"
+import Link from "next/link";
 import { Carousel2 } from "./Carousel2";
+import { useEffect, useState } from "react";
+
+const query2 = groq`
+*[_type == "landingPage"][0]
+`;
+ 
+interface landingPage {
+    _id: string;
+    mainTitle: string;
+    subTitle: string;
+    leadText: string;
+    _createdAt: string;
+  }
   
   function Landing() {
+    const [landingText, setLandingPage] = useState<landingPage[]>([]);
+
+
+    useEffect(() => {
+        const fetchData2 = async () => {
+          try {
+            const initialLanding = await client.fetch(query2);
+            console.log("Fetched landing:", initialLanding);
+            setLandingPage(initialLanding);
+            
+          } catch (error) {
+            console.error("Failed to fetch posts:", error);
+          }
+        };
+    
+        fetchData2();
+      }, []);
+
+      
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-white overflow-x-hidden">
         <section className="relative py-12 sm:py-16 lg:pt-20 xl:pb-0 w-full">
@@ -24,12 +59,7 @@ import { Carousel2 } from "./Carousel2";
                 </span>
               </h1>
               <p className="mx-auto mt-10 max-w-md text-base leading-7 text-black">
-                Unlock the power of unparalleled expertise in finance and
-                administration, meticulously customized and meticulously tailored
-                to address the unique needs and challenges encountered at every
-                stage of your company evolution and growth trajectory,
-                guaranteeing unmatched support, seamless scalability, and enduring
-                success.
+               {landingText?.leadText}
               </p>
               <Link href={"/contact"} prefetch={false}>
                 <Button variant="secondary" className="mr-4 mt-4 bg-blue-500">Contact Us</Button>
