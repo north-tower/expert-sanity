@@ -1,5 +1,6 @@
 "use client"
 
+import Landing from "@/components/Landing";
 import { client } from "@/lib/sanity.client";
 import { groq } from "next-sanity";
 import { useEffect, useState } from "react";
@@ -15,6 +16,14 @@ interface Post {
   _createdAt: string;
 }
 
+interface landingPage {
+  _id: string;
+  mainTitle: string;
+  subTitle: string;
+  leadText: string;
+  _createdAt: string;
+}
+
 const query = groq`
 *[_type == "post"] {
   _id,
@@ -26,8 +35,15 @@ const query = groq`
 } | order(_createdAt desc)
 `;
 
+const query2 = groq`
+*[_type == "landingPage"][0]
+`;
+
+
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [landingPage, setLandingPage] = useState<landingPage[]>([]);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,20 +58,69 @@ export default function Home() {
 
     fetchData();
   }, []);
+  
+   useEffect(() => {
+    const fetchData2 = async () => {
+      try {
+        const initialLanding = await client.fetch(query2);
+        console.log("Fetched landing:", initialLanding);
+        setLandingPage(initialLanding);
+        
+      } catch (error) {
+        console.error("Failed to fetch posts:", error);
+      }
+    };
+
+    fetchData2();
+  }, []);
+
+  
 
   return (
-    <main>
-      {posts.length > 0 ? (
-        posts.map((post) => (
-          <div key={post._id}>
-            <h2>{post.title}</h2>
-            <p>{post.author.name}</p>
-            <p>{post._createdAt}</p>
-          </div>
-        ))
-      ) : (
-        <p>No posts found</p>
-      )}
+    <main >
+    <div className="max-w-8xl"> 
+    {/* <section className='snap-center'>
+      <Header2 />
+    </section> */}
+ 
+    <section className='snap-center'>
+        <Landing />
+    </section>
+  
+    {/* <section className='snap-center'>
+        <Details />
+    </section>
+ 
+    <section className='snap-center'>
+      <Futuro />
+    </section>
+  
+    <section className='snap-center'>
+      <Hero />
+    </section>
+    <section className='snap-center'>
+        <Serve />
+    </section>
+  
+    
+    <section className='snap-center'>
+      <Grow />
+    </section> */}
+    {/* <section className='snap-center'>
+      <About />
+    </section> */}
+    {/* <section className='snap-center'>
+      <Tail />
+    </section>
+    <section className='snap-center'>
+      <Cta />
+    </section> */}
+{/* 
+    <section className='snap-center'>
+      <Footer />
+    </section> */}
+    </div>
+    
     </main>
   );
 }
