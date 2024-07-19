@@ -10,7 +10,8 @@ import { detailsType } from './schemaTypes/detailsType'
 import { serviceType } from './schemaTypes/serviceType'
 import { heroType } from './schemaTypes/heroType'
 import { serveType } from './schemaTypes/serveType'
+import { growType } from './schemaTypes/growType'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [blockContentType, categoryType, postType, authorType, landingPageType, clientType, detailsType, serviceType, heroType, serveType],
+  types: [blockContentType, categoryType, postType, authorType, landingPageType, clientType, detailsType, serviceType, heroType,growType, serveType],
 }

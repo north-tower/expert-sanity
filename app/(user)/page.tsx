@@ -2,6 +2,7 @@
 
 import Details from "@/components/Details";
 import Futuro from "@/components/Futuro";
+import Grow from "@/components/Grow";
 import Hero from "@/components/Hero";
 import Landing from "@/components/Landing";
 import Serve from "@/components/Serve";
@@ -103,7 +104,9 @@ export default function Home() {
     <section className='snap-center'>
         <Serve />
     </section>
-  
+    <section className='snap-center'>
+      <Grow />
+    </section>
     {/* <section className='snap-center'>
         <Details />
     </section>

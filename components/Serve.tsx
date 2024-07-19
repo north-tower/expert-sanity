@@ -1,7 +1,36 @@
 import Link from 'next/link'
-import React from 'react'
+import { groq } from "next-sanity";
+import { client, urlFor } from "@/lib/sanity.client";
+import { useEffect, useState } from 'react';
 
+const query = groq`
+*[_type == "serve"]
+`;
+interface serve {   
+    description: string;
+    title: string;
+  _id: string;
+
+}
 function Serve() {
+  const [serve, setServe] = useState<serve[]>([]);
+
+  useEffect(() => {
+    const fetchData2 = async () => {
+      try {
+        const initialServe = await client.fetch(query);
+        console.log("Fetched serve:", initialServe);
+        setServe(initialServe);
+        
+      } catch (error) {
+        console.error("Failed to fetch posts:", error);
+      }
+    };
+
+    fetchData2();
+  }, []);
+  
+
   return (
     <div >
         <section className="py-6 sm:py-8 lg:py-12">
@@ -18,6 +47,7 @@ function Serve() {
     </div>
 
     <div className="grid gap-8 sm:grid-cols-2 sm:gap-12 lg:grid-cols-3 xl:grid-cols-3 xl:gap-16">
+    {serve.map((serve) => (
    
       <article className="flex flex-col items-center gap-4 md:flex-row lg:gap-6">
         {/* <a href="#" className="group relative block h-56 w-full shrink-0 self-start overflow-hidden rounded-lg bg-gray-100 shadow-lg md:h-24 md:w-24 lg:h-40 lg:w-40">
@@ -26,13 +56,13 @@ function Serve() {
 
         <div className="flex flex-col gap-2">
         <h2 className="text-xl font-bold text-blue-500">
-            <a href="#" className="transition duration-100 hover:text-blue-800 ">Small Business Owners</a>
+            <a href="#" className="transition duration-100 hover:text-blue-800 ">{serve?.title}</a>
           </h2>
           {/* <h2 className="text-xl font-bold text-gray-800">
             <a href="#" className="transition duration-100 hover:text-rose-500 active:text-rose-600">The Pines and the Mountains</a>
           </h2> */}
 
-          <p className="text-gray-500 text-sm">Streamline your finances and focus on growing your business.</p>
+          <p className="text-gray-500 text-sm">{serve?.description}</p>
 
           <div>
             <Link href="/blog">
@@ -43,57 +73,9 @@ function Serve() {
           </div>
         </div>
       </article>
+        ))}
       
-      <article className="flex flex-col items-center gap-4 md:flex-row lg:gap-6">
-        {/* <a href="#" className="group relative block h-56 w-full shrink-0 self-start overflow-hidden rounded-lg bg-gray-100 shadow-lg md:h-24 md:w-24 lg:h-40 lg:w-40">
-          <img src="https://images.unsplash.com/photo-1511376777868-611b54f68947?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" loading="lazy" alt="" className="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
-        </a> */}
-
-        <div className="flex flex-col gap-2">
-         
-
-          <h2 className="text-xl font-bold text-blue-500">
-            <a href="#" className="transition duration-100 hover:text-blue-800 ">Freelancers and Consultants</a>
-          </h2>
-
-          <p className="text-gray-500 text-sm">Keep your projects profitable with easy expense tracking and invoicing.</p>
-
-          <div>
-          <Link href="/blog">
-            <p  className="font-semibold text-blue-500 transition duration-100 
-            hover:text-blue-800 active:text-rose-700">Read more</p>
-            
-            </Link>
-          </div>
-        </div>
-      </article>
-     
-      <article className="flex flex-col items-center gap-4 md:flex-row lg:gap-6">
-        {/* <a href="#" className="group relative block h-56 w-full shrink-0 self-start overflow-hidden rounded-lg bg-gray-100 shadow-lg md:h-24 md:w-24 lg:h-40 lg:w-40">
-          <img src="https://images.unsplash.com/photo-1496395031280-4201b0e022ca?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80" loading="lazy" alt="" className="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
-        </a> */}
-
-        <div className="flex flex-col gap-2">
-          {/* <span className="text-sm text-gray-400">April 2, 2022</span> */}
-
-          <h2 className="text-xl font-bold text-blue-500">
-            <a href="#" className="transition duration-100 hover:text-blue-800 text-blue-500">Real Estate Professionals</a>
-          </h2>
-
-          <p className="text-gray-500">Simplify property management and track your investments with ease.
-          </p>
-
-          <div>
-          <Link href="/blog">
-            <p  className="font-semibold text-blue-500 transition duration-100 
-            hover:text-blue-800 active:text-rose-700">Read more</p>
-            
-            </Link>
-          </div>
-        </div>
-      </article>
-      
-    
+       
    
     </div>
   </div>
