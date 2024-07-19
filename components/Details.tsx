@@ -1,6 +1,36 @@
-import React from 'react'
+"use client"
 
+import { client } from "@/lib/sanity.client";
+import { groq } from "next-sanity";
+import { useEffect, useState } from "react";
+
+const query = groq`
+*[_type == "details"][0]
+`;
+
+interface details {
+   
+  Description: string;
+ 
+}
+ 
 function Details() {
+  const [details, setDetails] = useState<details>({Description: ''});
+
+  useEffect(() => {
+    const fetchData2 = async () => {
+      try {
+        const initialDetails = await client.fetch(query);
+        console.log("Fetched details:", initialDetails);
+        setDetails(initialDetails);
+        
+      } catch (error) {
+        console.error("Failed to fetch posts:", error);
+      }
+    };
+
+    fetchData2();
+  }, []);
   return (
     <div className="">
         <section className="mx-auto flex max-w-lg flex-col px-4 py-10 lg:max-w-screen-xl lg:flex-row">
@@ -19,11 +49,8 @@ function Details() {
     <h2 className="mb-10 max-w-lg  text-4xl font-bold leading-snug lg:text-4xl lg:leading-snug">A 
     <span className="text-blue-600"> revolutionary</span> way to handle bookkeeping</h2>
     <div className="grid gap-y-12 gap-x-8 lg:grid-cols-1  text-2xl">
-    Welcome to Procounts Kenya, the ultimate solution for seamless and 
-    efficient bookkeeping tailored to meet the needs of modern businesses. Whether you are 
-    a small business owner, a freelancer, or an accountant, our company is designed to
-     simplify your financial management processes, giving you more
-     time to focus on what you do best—growing your business.
+    {details?.Description}
+    
     </div>
   </div>
 </section>
