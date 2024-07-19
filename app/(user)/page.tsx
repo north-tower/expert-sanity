@@ -1,21 +1,33 @@
 import { client } from "@/lib/sanity.client";
 import { groq } from "next-sanity";
-import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal, AwaitedReactNode } from "react";
+
+interface Author {
+  name: string;
+}
+
+interface Post {
+  _id: string;
+  title: string;
+  author: Author;
+  _createdAt: string;
+}
 
 const query = groq`
-*[_type=='post'] {
-  ...,
-  author->,
-  categories[]->
-
+*[_type == "post"] {
+  _id,
+  title,
+  author-> {
+    name
+  },
+  _createdAt
 } | order(_createdAt desc)
 `;
 
 export default async function Home() {
-  let posts = [];
+  let posts: Post[] = [];
   try {
     posts = await client.fetch(query);
-    // console.log(posts);
+    console.log("Fetched posts:", posts); // Log the fetched posts
   } catch (error) {
     console.error("Failed to fetch posts:", error);
   }
@@ -23,7 +35,7 @@ export default async function Home() {
   return (
     <main>
       {posts.length > 0 ? (
-        posts.map((post: { _id: Key | null | undefined; title: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | Iterable<ReactNode> | null | undefined; author: { name: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | Iterable<ReactNode> | null | undefined; }; _createdAt: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | Iterable<ReactNode> | null | undefined; }) => (
+        posts.map((post) => (
           <div key={post._id}>
             <h2>{post.title}</h2>
             <p>{post.author.name}</p>
