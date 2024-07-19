@@ -1,6 +1,7 @@
 "use client"
 
 import Details from "@/components/Details";
+import Futuro from "@/components/Futuro";
 import Landing from "@/components/Landing";
 import { client } from "@/lib/sanity.client";
 import { groq } from "next-sanity";
@@ -90,6 +91,9 @@ export default function Home() {
      
     <section className='snap-center'>
         <Details />
+    </section>
+    <section className='snap-center'>
+      <Futuro />
     </section>
   
     {/* <section className='snap-center'>
