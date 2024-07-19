@@ -9,26 +9,48 @@ import {
 } from "@/components/ui/carousel";
 import { groq } from "next-sanity";
 import { client, urlFor } from "@/lib/sanity.client";
+import { useState } from "react";
 
 
 
 const query = groq`
-*[_type == "clients"]
+*[_type == "clients"] {
+  _id,
+  name,
+  _createdAt,
+  _updatedAt,
+  "mainImageUrl": mainImage.asset->url,
+  mainImage {
+    alt,
+    asset
+  }
+}
 `;
 
-interface clients {
-  image: string;
+interface Client {
+  _id: string;
+  name: string;
+  _createdAt: string;
+  _updatedAt: string;
+  mainImage: {
+    alt: string;
+    asset: {
+      _ref: string;
+      _type: string;
+    };
+  };
+  mainImageUrl: string;
 }
 
 export function Carousel2() {
-  const [images, setImages] = React.useState<clients[]>([]);
+  const [clients, setClients] = useState<Client[]>([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const initialImage = await client.fetch(query);
-        console.log("Fetched image:", initialImage);
-        setImages(initialImage);
+        const initialClient = await client.fetch(query);
+        console.log("Fetched image:", initialClient);
+        setClients(initialClient);
       } catch (error) {
         console.error("Failed to fetch posts:", error);
       }
@@ -48,14 +70,14 @@ export function Carousel2() {
       className="w-full max-w-sm "
     >
       <CarouselContent className="">
-        {images.map((mainImage, index) => (
-          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+        {clients.map((client) => (
+          <CarouselItem key={client._id} className="md:basis-1/2 lg:basis-1/3">
             <div className="p-1 ">
               <Card className="rounded-2xl">
                 <CardContent className="flex items-center justify-center p-3 " style={{ height: '90px' }}>
                   <img
-                    src={urlFor(mainImage).url()}
-                    alt=""
+                     src={client.mainImageUrl} alt={client.mainImage.alt}
+                   
                     className="h-full w-full object-contain"
                   />
                 </CardContent>

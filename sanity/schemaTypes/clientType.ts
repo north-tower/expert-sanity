@@ -7,7 +7,7 @@ export const clientType = defineType({
   fields: [
     defineField({
       name: 'name',
-      title: 'Client Name',
+      title: 'ClientName',
       type: 'string',
       validation: Rule => Rule.required().error('Client Name is required'),
     }),
