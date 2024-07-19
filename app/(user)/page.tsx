@@ -4,6 +4,7 @@ import Details from "@/components/Details";
 import Futuro from "@/components/Futuro";
 import Hero from "@/components/Hero";
 import Landing from "@/components/Landing";
+import Serve from "@/components/Serve";
 import { client } from "@/lib/sanity.client";
 import { groq } from "next-sanity";
 import { useEffect, useState } from "react";
@@ -98,6 +99,9 @@ export default function Home() {
     </section>
     <section className='snap-center'>
       <Hero />
+    </section>
+    <section className='snap-center'>
+        <Serve />
     </section>
   
     {/* <section className='snap-center'>
