@@ -1,5 +1,8 @@
+"use client"
+
 import { client } from "@/lib/sanity.client";
 import { groq } from "next-sanity";
+import { useEffect, useState } from "react";
 
 interface Author {
   name: string;
@@ -23,14 +26,22 @@ const query = groq`
 } | order(_createdAt desc)
 `;
 
-export default async function Home() {
-  let posts: Post[] = [];
-  try {
-    posts = await client.fetch(query);
-    console.log("Fetched posts:", posts); // Log the fetched posts
-  } catch (error) {
-    console.error("Failed to fetch posts:", error);
-  }
+export default function Home() {
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const initialPosts = await client.fetch(query);
+        console.log("Fetched posts:", initialPosts);
+        setPosts(initialPosts);
+      } catch (error) {
+        console.error("Failed to fetch posts:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <main>
