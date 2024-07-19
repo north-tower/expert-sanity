@@ -12,15 +12,15 @@ const query2 = groq`
 `;
  
 interface landingPage {
-    _id: string;
+   
     mainTitle: string;
     subTitle: string;
     leadText: string;
-    _createdAt: string;
+   
   }
   
   function Landing() {
-    const [landingText, setLandingPage] = useState<landingPage[]>([]);
+    const [landingText, setLandingPage] = useState<landingPage>({mainTitle: '', subTitle: '', leadText: ''});
 
 
     useEffect(() => {
