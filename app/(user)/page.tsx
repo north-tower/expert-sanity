@@ -1,11 +1,13 @@
 "use client"
 
+import About from "@/components/About";
 import Details from "@/components/Details";
 import Futuro from "@/components/Futuro";
 import Grow from "@/components/Grow";
 import Hero from "@/components/Hero";
 import Landing from "@/components/Landing";
 import Serve from "@/components/Serve";
+import Tail from "@/components/Tail";
 import { client } from "@/lib/sanity.client";
 import { groq } from "next-sanity";
 import { useEffect, useState } from "react";
@@ -107,6 +109,12 @@ export default function Home() {
     <section className='snap-center'>
       <Grow />
     </section>
+    <section className='snap-center'>
+      <Tail />
+    </section>
+    {/* <section className='snap-center'>
+      <About />
+    </section>  */}
     {/* <section className='snap-center'>
         <Details />
     </section>

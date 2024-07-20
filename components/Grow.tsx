@@ -1,6 +1,36 @@
-import React from 'react'
+import { groq } from "next-sanity";
+import { client, urlFor } from "@/lib/sanity.client";
+import { useEffect, useState } from "react";
+
+const query = groq`
+*[_type == "grow"]
+`;
+
+interface grow {   
+  Description: string;
+  Title: string;
+_id: string;
+
+} 
 
 function Grow() {
+  const [grow, setGrow] = useState<grow[]>([]);
+
+  useEffect(() => {
+    const fetchData2 = async () => {
+      try {
+        const initialGrow = await client.fetch(query);
+        console.log("Fetched grow:", initialGrow);
+        setGrow(initialGrow);
+        
+      } catch (error) {
+        console.error("Failed to fetch posts:", error);
+      }
+    };
+
+    fetchData2();
+  }, []);
+
   return (
     <div className=''>
         <section className="relative overflow-hidden  py-12 sm:py-16 lg:py-20">
@@ -21,33 +51,16 @@ function Grow() {
     </div>
 
     <div className="mx-auto mt-20 grid max-w-screen-lg grid-cols-1 gap-x-8 gap-y-12 text-center sm:text-left md:grid-cols-3">
+      
+    {grow.map((grow) => (
+      
       <div className="backdrop-blur-lg relative mb-3 rounded-3xl border bg-white px-12 py-10 text-left shadow lg:px-12">
-        <p className="relative text-2xl font-black text-blue-600">User Metrics</p>
-        <p className="relative mt-5 text-gray-600">Our user base has grown by an impressive 25% month-over-month, reflecting a strong adoption rate.</p>
+        <p className="relative text-2xl font-black text-blue-600">{grow?.Title}</p>
+        <p className="relative mt-5 text-gray-600">{grow?.Description}</p>
       </div>
+        ))}
 
-      <div className="backdrop-blur-lg relative mb-3 rounded-3xl border bg-white px-12 py-10 text-left shadow lg:px-12">
-        <p className="relative text-2xl font-black text-blue-600">Engagement Metrics</p>
-        <p className="relative mt-5 text-gray-600">Users are engaging with our app an average of 10 times per week, showing high interaction and reliance.</p>
-      </div>
-
-      <div className="backdrop-blur-lg relative mb-3 rounded-3xl border bg-white px-12 py-10 text-left shadow lg:px-12">
-        <p className="relative m-0 text-2xl font-black text-blue-600">Financial Metrics</p>
-        <p className="relative mt-5 text-gray-600">Our revenue has grown by 30% quarter-over-quarter, demonstrating robust financial health.</p>
-      </div>
-
-      <div className="backdrop-blur-lg relative mb-3 rounded-3xl border bg-white px-12 py-10 text-left shadow lg:px-12">
-        <p className="relative m-0 text-2xl font-black text-blue-600">Conversion Metrics</p>
-        <p className="relative mt-5 text-gray-600">Our conversion rate is 20%, meaning one in five visitors signs up for our app.</p>
-      </div>
-      <div className="backdrop-blur-lg relative mb-3 rounded-3xl border bg-white px-12 py-10 text-left shadow lg:px-12">
-        <p className="relative m-0 text-2xl font-black text-blue-600">Operational Metrics</p>
-        <p className="relative mt-5 text-gray-600">Our average support response time is under 30 minutes, ensuring timely assistance.</p>
-      </div>
-      <div className="backdrop-blur-lg relative mb-3 rounded-3xl border bg-white px-12 py-10 text-left shadow lg:px-12">
-        <p className="relative m-0 text-2xl font-black text-blue-600">Growth Metrics</p>
-        <p className="relative mt-5 text-gray-600">We have captured 15% of our target market, showing significant penetration and acceptance.</p>
-      </div>
+     
     </div>
   </div>
 </section>
