@@ -30,7 +30,7 @@ interface Service {
   _createdAt: string;
 }
 
-function page() {
+function Forecast() {
   const [services, setServices] = useState<Service>();
 
   useEffect(() => {
@@ -141,4 +141,4 @@ function page() {
   )
 }
 
-export default page
+export default Forecast

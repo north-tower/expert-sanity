@@ -30,7 +30,7 @@ interface Service {
   _createdAt: string;
 }
 
-function page() {
+function Services() {
   const [services, setServices] = useState<Service>();
 
 
@@ -205,4 +205,4 @@ function page() {
   )
 }
 
-export default page
+export default Services
