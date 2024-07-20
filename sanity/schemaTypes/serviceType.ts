@@ -17,6 +17,12 @@ export const serviceType = defineType({
         type: 'string',
         validation: Rule => Rule.required().error('Description is required'),
       }),
+      defineField({
+        name: 'href',
+        title: 'href',
+        type: 'string',
+        validation: Rule => Rule.required().error('Description is required'),
+      }),
   ],
   preview: {
     select: {
