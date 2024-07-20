@@ -2,20 +2,46 @@
 
 import Link from "next/link";
 import { Fragment, useState } from "react";
-import { Bars3Icon , ChatBubbleLeftIcon, HomeIcon, 
-    PaperAirplaneIcon,
+import { Bars3Icon ,
     ChevronDownIcon, Square3Stack3DIcon,BellIcon,
     PhoneIcon, PlayCircleIcon,UserGroupIcon,CpuChipIcon,PuzzlePieceIcon,CircleStackIcon,SparklesIcon,ChartBarIcon, CubeIcon,GlobeAltIcon,SquaresPlusIcon,ShieldExclamationIcon,
      XMarkIcon} from "@heroicons/react/24/solid";
 import { Dialog, Disclosure, Popover, Transition } from
  "@headlessui/react"
 import { cn } from "@/lib/utils";
-import { Link2Icon } from "lucide-react";
+import { client } from "@/lib/sanity.client";
+import { groq } from "next-sanity";
+import { useEffect } from "react";
 
+const query = groq`
+*[_type == "service"]
+`;
 
+interface service {   
+    description: string;
+    title: string;
+  _id: string;
+  href: string;
+
+}
 
 function Header() {
+    const [services, setServices] = useState<service[]>([]);
 
+    useEffect(() => {
+        const fetchData2 = async () => {
+          try {
+            const initialServices = await client.fetch(query);
+            console.log("Fetched services:", initialServices);
+            setServices(initialServices);
+            
+          } catch (error) {
+            console.error("Failed to fetch posts:", error);
+          }
+        };
+    
+        fetchData2();
+      }, []);
     const [mobileMenuOpen , setMobileMenuOpen] = useState(false);
 
     const products = [
@@ -161,8 +187,8 @@ function Header() {
                         className="absolute bg-white -left-8 top-full z-10 mt-3 w-screen 
                         max-w-md overflow-hidden rounded-3xl shadow-lg ring-1 ring-gray-900/5">
                             <div className="p-4">
-                                {products.map((item) => (
-                                    <div key={item.name}
+                                {services.map((service) => (
+                                    <div key={service?._id}
                                     className="group relative flex items-center gap-x-6
                                     rounded-lg p-4 
                                     text-sm leading-6 
@@ -170,18 +196,19 @@ function Header() {
                                        <div className="flex h-11 flex-none items-center 
                                        justify-center rounded-lg 
                                        ">
-                                        <item.icon className="h-6 w-6 text-black
+                                        <UserGroupIcon className="h-6 w-6 text-black
                                         group-hover:text-blue-600" 
                                         aria-hidden="true" />
                                        
                                         </div>
                                         <div className="flex-auto">
-                                            <Link href={item.href} 
+                                            <Link href={`/${service?.href}`}
+ 
                                             className="block 
-                                            font-semibold text-[#013B94] "> {item.name} 
+                                            font-semibold text-[#013B94] "> {service.title} 
                                             <span className="absolute inset-0" />
                                             </Link>
-                                            <p className="mt-1 text-black">{item.description}</p>
+                                            <p className="mt-1 text-black">{service.description}</p>
                                         </div>
                                         </div>
                                 ))}
