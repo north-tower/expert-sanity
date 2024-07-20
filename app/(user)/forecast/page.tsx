@@ -1,20 +1,67 @@
+'use client'
+
 import Link from 'next/link'
-import React from 'react'
+import { client } from "@/lib/sanity.client";
+import { groq } from "next-sanity";
+import { useEffect, useState } from "react";
+
+
+const query = groq`
+*[_type == "service"][0]
+`;
+
+interface Step {
+  title: string;
+  description: string;
+}
+
+interface Service {
+  step1: Step;
+  step2: Step;
+  step3: Step;
+  step4: Step;
+  _updatedAt: string;
+  description: string;
+  href: string;
+  _rev: string;
+  _type: string;
+  _id: string;
+  title: string;
+  _createdAt: string;
+}
 
 function page() {
+  const [services, setServices] = useState<Service>();
+
+  useEffect(() => {
+    const fetchData2 = async () => {
+      try {
+        const initialServices = await client.fetch(query);
+        console.log("Fetched services:", initialServices);
+        setServices(initialServices);
+        
+      } catch (error) {
+        console.error("Failed to fetch posts:", error);
+      }
+    };
+
+    fetchData2();
+  }, []);
   return (
     <div>
         <section className="w-screen  py-10 ">
   <div className="container mx-auto w-full max-w-screen-xl">
     <div className="w-full"> 
-      <h2 className="text-center text-3xl text-blue-500 font-extrabold">Financial Forecasting</h2>
-      <p className="mx-auto mb-4 max-w-xl py-2 text-center text-gray-600 sm:text-lg">How does financial forecasting work.</p>
+      <h2 className="text-center text-3xl text-blue-500 font-extrabold">{services?.title}</h2>
+      <p className="mx-auto mb-4 max-w-xl py-2 text-center text-gray-600 sm:text-lg">How does
+        {services?.title} work.</p>
     </div>
     <div  className=" mx-auto py-10 grid max-w-screen-xl grid-cols-1  pl-6 pr-4 sm:px-20
      lg:grid-cols-3">
   <div  className="col-span-1 flex flex-col justify-center text-center sm:text-left md:pr-10">
     <h1  className="mb-6 text-4xl">How it works..</h1> 
-    <p  className="text-gray-600">These steps ensure a structured approach to financial forecasting, providing valuable insights to support strategic decision-making and business planning.</p>
+    <p  className="text-gray-600">These steps ensure a structured approach to 
+      {services?.title}, providing valuable insights to support strategic decision-making and business planning.</p>
   </div>
   <div  className="col-span-2 mt-10 grid grid-cols-1 gap-6 rounded-2xl bg-gray-300 p-5 sm:p-10
    md:grid-cols-2 lg:mt-0">
@@ -22,33 +69,29 @@ function page() {
       <div  className="absolute -left-12 sm:left-auto flex h-10 w-10 items-center justify-center
        rounded-full bg-gray-300 text-lg text-gray-500 sm:relative md:bg-transparent md:text-5xl">01</div>
       <div  className=""> 
-        <h3  className="text-xl font-semibold">Data Collection and Analysis</h3>
-        <p  className="text-gray-600 mt-3">Comprehensive historical financial data, including sales figures, expenses, and cash flow statements, is gathered.
-           In-depth analysis uncovers critical trends and patterns influencing the businesss financial performance. 
-          This foundational step ensures forecasts are based on accurate and relevant data, providing a solid basis for future projections..</p>
+        <h3  className="text-xl font-semibold">{services?.step1.title}</h3>
+        <p  className="text-gray-600 mt-3">{services?.step1.description}</p>
       </div> 
     </div>
     <div  className="relative flex gap-5">
       <div  className="absolute -left-12 sm:left-auto flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-lg text-gray-500 sm:relative md:bg-transparent md:text-5xl">02</div>
       <div  className="">
-        <h3  className="text-xl font-semibold">Developing Forecasting Models</h3>
-        <p  className="text-gray-600 mt-3">Suitable forecasting methods, such as time series analysis, regression analysis, or advanced financial modeling techniques, are selected. Forecasting models are constructed and refined based on robust historical data and pertinent external factors. The choice and customization of models are crucial, as they directly impact the accuracy and reliability of the forecasts.</p>
+        <h3  className="text-xl font-semibold">{services?.step2.title}</h3>
+        <p  className="text-gray-600 mt-3">{services?.step2.description}</p>
       </div>
     </div>
     <div  className="relative flex gap-5">
       <div  className="absolute -left-12 sm:left-auto flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-lg text-gray-500 sm:relative md:bg-transparent md:text-5xl">03</div>
       <div  className="">
-        <h3  className="text-xl font-semibold">Forecast Generation</h3>
-        <p  className="text-gray-600 mt-3">Precise short-term and long-term financial forecasts are generated using validated models and predictive analytics. Scenario analysis is implemented to evaluate potential outcomes across diverse economic scenarios or strategic initiatives. This step provides a range of potential futures, helping prepare for various possibilities and make informed decisions.</p>
+        <h3  className="text-xl font-semibold">{services?.step3.title}</h3>
+        <p  className="text-gray-600 mt-3">{services?.step3.description}</p>
       </div>
     </div>
     <div  className="relative flex gap-5">
       <div  className="absolute -left-12 sm:left-auto flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-lg text-gray-500 sm:relative md:bg-transparent md:text-5xl">04</div>
       <div  className="">
-        <h3  className="text-xl font-semibold">Monitoring and Adjustments</h3>
-        <p  className="text-gray-600 mt-3">Actual financial performance is continuously monitored against forecasted projections to gauge 
-          accuracy and relevance. Forecasts are adapted as needed based on emerging data or shifts in market dynamics to optimize strategic decision-making. 
-          Regular adjustments ensure forecasts remain up-to-date and aligned with the businesss evolving landscape..</p>
+        <h3  className="text-xl font-semibold">{services?.step4.title}</h3>
+        <p  className="text-gray-600 mt-3">{services?.step4.description}</p>
       </div>
     </div>
   </div>
