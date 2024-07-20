@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 
-function Article({id,date, title, description, image}: {id: number, date: string, title: string, description: string, image: string}) {
+function Article({id,date, title, description, image}: {id: string, date: string, title: string, description: string, image: string}) {
   return (
     <div>
          <article className="flex flex-col items-center gap-4 md:flex-row lg:gap-6">
