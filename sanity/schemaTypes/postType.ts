@@ -46,6 +46,10 @@ export const postType = defineType({
       type: 'datetime',
     }),
     defineField({
+      name: 'leadText',
+      type: 'string',
+    }),
+    defineField({
       name: 'body',
       type: 'blockContent',
     }),
