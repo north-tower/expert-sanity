@@ -1,7 +1,9 @@
 "use client"
 
 import About from "@/components/About";
+import Cta from "@/components/Cta";
 import Details from "@/components/Details";
+import Footer from "@/components/Footer";
 import Futuro from "@/components/Futuro";
 import Grow from "@/components/Grow";
 import Hero from "@/components/Hero";
@@ -112,6 +114,12 @@ export default function Home() {
     <section className='snap-center'>
       <Tail />
     </section>
+    <section className='snap-center'>
+      <Cta />
+    </section> 
+    <section className='snap-center'>
+      <Footer />
+    </section> 
     {/* <section className='snap-center'>
       <About />
     </section>  */}

@@ -58,7 +58,7 @@ function Grow() {
         <p className="relative text-2xl font-black text-blue-600">{grow?.Title}</p>
         <p className="relative mt-5 text-gray-600">{grow?.Description}</p>
       </div>
-        ))}
+    ))}
 
      
     </div>
