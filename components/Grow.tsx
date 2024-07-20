@@ -54,7 +54,7 @@ function Grow() {
       
     {grow.map((grow) => (
       
-      <div className="backdrop-blur-lg relative mb-3 rounded-3xl border bg-white px-12 py-10 text-left shadow lg:px-12">
+      <div key={grow?._id} className="backdrop-blur-lg relative mb-3 rounded-3xl border bg-white px-12 py-10 text-left shadow lg:px-12">
         <p className="relative text-2xl font-black text-blue-600">{grow?.Title}</p>
         <p className="relative mt-5 text-gray-600">{grow?.Description}</p>
       </div>
