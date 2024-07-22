@@ -14,8 +14,9 @@ import { growType } from './schemaTypes/growType'
 import { tailType } from './schemaTypes/tailType'
 import { valueType } from './schemaTypes/valueType'
 import { termsType } from './schemaTypes/termsType'
+import { careerType } from './schemaTypes/careerType'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [blockContentType, categoryType, postType, authorType, landingPageType, clientType,tailType, 
-    detailsType, serviceType, heroType,growType, serveType, valueType, termsType],
+    detailsType, serviceType, heroType,growType, serveType, valueType, termsType, careerType],
 }
