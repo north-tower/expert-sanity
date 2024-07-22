@@ -14,6 +14,10 @@ interface Benefits {
   benefit1: string;
   benefit2: string;
   benefit3: string;
+  benefit4: string;
+  benefit5: string;
+  benefit6: string;
+
   description: string;
 }
 
@@ -146,7 +150,7 @@ function Page() {
               <path fill="currentColor" d="M224 448a120 120 0 0 1-45.248-231.135l-3.779-32.75C115.143 204.558 72 261.334 72 328c0 83.813 68.187 152 152 152a152.06 152.06 0 0 0 130.044-73.378L344 360c-16 48-61.4 88-120 88Z" />
             </svg>
           </div>
-          <p className="mb-2 text-base font-medium text-gray-600">Recognition & Rewards</p>
+          <p className="mb-2 text-base font-medium text-gray-600">{career.benefits.benefit4}</p>
         </div>
 
         <div className="flex items-center">
@@ -157,14 +161,14 @@ function Page() {
               <path fill="currentColor" d="M19 14c-1.654 0-3 1.346-3 3c0 3.188 3 5 3 5s3-1.813 3-5c0-1.654-1.346-3-3-3zm0 4.5a1.5 1.5 0 1 1 .001-3.001A1.5 1.5 0 0 1 19 18.5z" />
             </svg>
           </div>
-          <p className="mb-2 text-base font-medium text-gray-600">401(k) Matching</p>
+          <p className="mb-2 text-base font-medium text-gray-600">  {career.benefits.benefit5} </p>
         </div>
         <div className="flex items-center">
           <div className="mr-3 rounded-full bg-blue-100 p-6 text-7xl text-blue-800">
           
             <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48"><path fill="currentColor" fill-rule="evenodd" d="M17 7a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3h3a3 3 0 0 1 3 3v16h-2V10a1 1 0 0 0-1-1h-3a3 3 0 0 1-3 3h-8a3 3 0 0 1-3-3h-3a1 1 0 0 0-1 1v28a1 1 0 0 0 1 1h10v2H14a3 3 0 0 1-3-3V10a3 3 0 0 1 3-3h3Zm3-1a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-8Zm3 10v3h-3v2h3v3h2v-3h3v-2h-3v-3h-2Zm1 13.665v4a1 1 0 0 0 1 1h4v-2h-1.475l1.253-1.178a5 5 0 0 1 8.273 1.845l1.885-.667a7.001 7.001 0 0 0-11.538-2.625L26 31.353v-1.688h-2Zm11.667 5.667h4a1 1 0 0 1 1 1v4h-2v-1.688l-1.398 1.313a7 7 0 0 1-11.538-2.625l1.885-.667a5 5 0 0 0 8.273 1.845l1.253-1.178h-1.475v-2Z" clip-rule="evenodd" /></svg>
           </div>
-          <p className="mb-2 text-base font-medium text-gray-600">Regular Checkups</p>
+          <p className="mb-2 text-base font-medium text-gray-600">{career.benefits.benefit6}</p>
         </div>
         </>
         )}
