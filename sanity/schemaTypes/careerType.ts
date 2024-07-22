@@ -42,6 +42,21 @@ export const careerType = defineType({
             type: 'string',
             title: 'Benefit3',
           },
+          {
+            name: 'benefit4',
+            type: 'string',
+            title: 'Benefit4',
+          },
+          {
+            name: 'benefit5',
+            type: 'string',
+            title: 'Benefit5',
+          },
+          {
+            name: 'benefit6',
+            type: 'string',
+            title: 'Benefit6',
+          },
         ],
       }),
   ],
