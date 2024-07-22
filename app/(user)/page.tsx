@@ -117,9 +117,9 @@ export default function Home() {
     <section className='snap-center'>
       <Cta />
     </section> 
-    <section className='snap-center'>
+    {/* <section className='snap-center'>
       <Footer />
-    </section> 
+    </section>  */}
     {/* <section className='snap-center'>
       <About />
     </section>  */}

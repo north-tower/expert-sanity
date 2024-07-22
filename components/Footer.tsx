@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import { client } from "@/lib/sanity.client";
 import { groq } from "next-sanity";
