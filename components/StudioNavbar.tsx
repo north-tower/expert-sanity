@@ -15,11 +15,7 @@ function StudioNavbar(props: any) {
              Procounts Studio
             </h1>
             
-            <Link 
-            href="https://www.papareact.com/universityofcode"
-            className="text-[#F7AB0A] font-bold ml-2">
-            uni
-            </Link>
+           
             </div>
         </div>
         <>{props.renderDefault(props)}</>
