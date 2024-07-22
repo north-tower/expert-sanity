@@ -11,8 +11,8 @@ function StudioNavbar(props: any) {
                Go To Website            
             </Link>
             <div className="hidden md:flex p-5 rounded-lg justify-center border-2 border-[#F7AB0A]">
-            <h1 className="font-bold text-white">
-             Want Coding Challenges & Solutions sent to your inbox daily?
+            <h1 className="font-bold ">
+             Procounts Studio
             </h1>
             
             <Link 
