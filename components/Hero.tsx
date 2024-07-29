@@ -44,7 +44,7 @@ function Hero() {
    </p>
    
   </div>
-  <img className="mx-auto mt-16 w-full max-w-screen-lg rounded-xl shadow-lg shadow-indigo-100" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71" alt="" />
+
 </div>
 
     </div>
