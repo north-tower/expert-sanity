@@ -172,7 +172,7 @@ function Forecast() {
         >
           <h2 className="mb-4 text-3xl font-bold text-gray-900 sm:text-4xl">Get in touch</h2>
           <p className="mb-8 text-2xl font-bold text-blue-500 sm:text-3xl">
-            Let's take your business to the next level
+            Let&apos;s take your business to the next level
           </p>
           
           <Link href="/contact">
