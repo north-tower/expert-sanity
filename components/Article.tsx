@@ -1,37 +1,60 @@
 import Link from 'next/link'
-import React from 'react'
+import { motion } from "framer-motion";
+import { Clock, User, ArrowRight } from "lucide-react";
 
-function Article({id,date, title, description, image}: {id: string, date: string, title: string, description: string, image: string}) {
-  return (
-    <div>
-         <article className="flex flex-col items-center gap-4 md:flex-row lg:gap-6">
-        <Link href={`/post/${id}`}  className="group relative block h-56 w-full shrink-0 self-start overflow-hidden rounded-lg bg-gray-100 shadow-lg md:h-24 md:w-24 lg:h-40 lg:w-40">
-          <img src={image} />
-        </Link>
-
-        <div className="flex flex-col gap-2">
-          <span className="text-sm text-gray-400">{date}</span>
-
-          <h2 className="text-xl font-bold text-gray-800">
-          <Link href={`/post/${id}`}>
-
-            <p className="transition duration-100 hover:text-blue-800 text-blue-500 active:text-rose-600">{title}</p>
-          </Link>
-          </h2>
-
-          <p className="text-gray-500">{description}</p>
-
-          <div>
-            <Link href={`/post/${id}`}>
-            <p className="font-semibold transition duration-100 hover:text-blue-800 text-blue-500
-             active:text-rose-700">Read more</p>
-            
-            </Link>
-          </div>
-        </div>
-      </article>
-    </div>
-  )
+interface ArticleProps {
+  id: string;
+  date: string;
+  title: string;
+  description: string;
+  image: string;
 }
 
-export default Article
+function Article({ id, date, title, description, image }: ArticleProps) {
+  return (
+    <motion.article
+      whileHover={{ y: -8 }}
+      className="group relative bg-white/80 backdrop-blur-sm rounded-3xl p-6 border border-blue-100/50 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/10"
+    >
+      <div className="relative h-48 rounded-2xl overflow-hidden mb-6">
+        <img
+          src={image}
+          alt={title}
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-transparent"></div>
+      </div>
+
+      <div className="flex items-center gap-4 mb-4 text-sm text-gray-500">
+        <div className="flex items-center gap-2">
+          <Clock className="h-4 w-4" />
+          <span>{new Date(date).toLocaleDateString()}</span>
+        </div>
+      </div>
+
+      <h2 className="text-xl font-bold mb-3 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+        {title}
+      </h2>
+
+      <p className="text-gray-600 mb-6 line-clamp-3">
+        {description}
+      </p>
+
+      <Link
+        href={`/post/${id}`}
+        className="inline-flex items-center gap-2 text-blue-600 font-medium group/link"
+      >
+        <span className="relative">
+          Read More
+          <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover/link:scale-x-100 transition-transform"></span>
+        </span>
+        <ArrowRight className="h-4 w-4 transform group-hover/link:translate-x-1 transition-transform" />
+      </Link>
+
+      {/* Decorative elements */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-600/5 to-indigo-600/5 rounded-bl-[100px] -z-10"></div>
+    </motion.article>
+  );
+}
+
+export default Article;

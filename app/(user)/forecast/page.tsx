@@ -1,142 +1,187 @@
 'use client'
 
 import Link from 'next/link'
-import { client } from "@/lib/sanity.client";
-import { groq } from "next-sanity";
-import { useEffect, useState } from "react";
+import { client } from "@/lib/sanity.client"
+import { groq } from "next-sanity"
+import { useEffect, useState } from "react"
+import { motion } from "framer-motion"
 
-
-const query = groq`
-*[_type == "service"][0]
-`;
-
+// Define types more clearly
 interface Step {
-  title: string;
-  description: string;
+  title: string
+  description: string
 }
 
 interface Service {
-  step1: Step;
-  step2: Step;
-  step3: Step;
-  step4: Step;
-  _updatedAt: string;
-  description: string;
-  href: string;
-  _rev: string;
-  _type: string;
-  _id: string;
-  title: string;
-  _createdAt: string;
+  step1: Step
+  step2: Step
+  step3: Step
+  step4: Step
+  _updatedAt: string
+  description: string
+  href: string
+  _rev: string
+  _type: string
+  _id: string
+  title: string
+  _createdAt: string
 }
 
+// Sanity query
+const serviceQuery = groq`
+  *[_type == "service"][0]
+`
+
+// Step component for better reusability
+const ServiceStep = ({ number, title, description }: { number: string, title?: string, description?: string }) => (
+  <motion.div 
+    className="relative flex gap-5"
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay: Number(number) * 0.1 }}
+  >
+    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-lg text-white sm:text-2xl flex-shrink-0">
+      {number}
+    </div>
+    <div>
+      <h3 className="text-xl font-semibold text-gray-900">{title || "Loading..."}</h3>
+      <p className="mt-3 text-gray-600">{description || "Loading description..."}</p>
+    </div>
+  </motion.div>
+)
+
+// Skeleton loading component
+const StepSkeleton = ({ number }: { number: string }) => (
+  <div className="relative flex gap-5">
+    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-300 text-lg text-white sm:text-2xl">
+      {number}
+    </div>
+    <div className="w-full">
+      <div className="h-6 w-1/2 rounded bg-gray-300 mb-3"></div>
+      <div className="h-4 w-full rounded bg-gray-200"></div>
+      <div className="h-4 w-3/4 rounded bg-gray-200 mt-2"></div>
+    </div>
+  </div>
+)
+
 function Forecast() {
-  const [services, setServices] = useState<Service>();
+  const [services, setServices] = useState<Service | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const fetchData2 = async () => {
+    const fetchServices = async () => {
       try {
-        const initialServices = await client.fetch(query);
-        console.log("Fetched services:", initialServices);
-        setServices(initialServices);
-        
-      } catch (error) {
-        console.error("Failed to fetch posts:", error);
+        setIsLoading(true)
+        const data = await client.fetch(serviceQuery)
+        setServices(data)
+      } catch (err) {
+        console.error("Failed to fetch service data:", err)
+        setError("Failed to load service information. Please try again later.")
+      } finally {
+        setIsLoading(false)
       }
-    };
+    }
 
-    fetchData2();
-  }, []);
+    fetchServices()
+  }, [])
+
   return (
-    <div>
-        <section className="w-screen  py-10 ">
-  <div className="container mx-auto w-full max-w-screen-xl">
-    <div className="w-full"> 
-      <h2 className="text-center text-3xl text-blue-500 font-extrabold">{services?.title}</h2>
-      <p className="mx-auto mb-4 max-w-xl py-2 text-center text-gray-600 sm:text-lg">How does
-        {services?.title} work.</p>
-    </div>
-    <div  className=" mx-auto py-10 grid max-w-screen-xl grid-cols-1  pl-6 pr-4 sm:px-20
-     lg:grid-cols-3">
-  <div  className="col-span-1 flex flex-col justify-center text-center sm:text-left md:pr-10">
-    <h1  className="mb-6 text-4xl">How it works..</h1> 
-    <p  className="text-gray-600">These steps ensure a structured approach to 
-      {services?.title}, providing valuable insights to support strategic decision-making and business planning.</p>
-  </div>
-  <div  className="col-span-2 mt-10 grid grid-cols-1 gap-6 rounded-2xl bg-gray-300 p-5 sm:p-10
-   md:grid-cols-2 lg:mt-0">
-    <div  className="relative flex gap-5">
-      <div  className="absolute -left-12 sm:left-auto flex h-10 w-10 items-center justify-center
-       rounded-full bg-gray-300 text-lg text-gray-500 sm:relative md:bg-transparent md:text-5xl">01</div>
-      <div  className=""> 
-        <h3  className="text-xl font-semibold">{services?.step1.title}</h3>
-        <p  className="text-gray-600 mt-3">{services?.step1.description}</p>
-      </div> 
-    </div>
-    <div  className="relative flex gap-5">
-      <div  className="absolute -left-12 sm:left-auto flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-lg text-gray-500 sm:relative md:bg-transparent md:text-5xl">02</div>
-      <div  className="">
-        <h3  className="text-xl font-semibold">{services?.step2.title}</h3>
-        <p  className="text-gray-600 mt-3">{services?.step2.description}</p>
-      </div>
-    </div>
-    <div  className="relative flex gap-5">
-      <div  className="absolute -left-12 sm:left-auto flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-lg text-gray-500 sm:relative md:bg-transparent md:text-5xl">03</div>
-      <div  className="">
-        <h3  className="text-xl font-semibold">{services?.step3.title}</h3>
-        <p  className="text-gray-600 mt-3">{services?.step3.description}</p>
-      </div>
-    </div>
-    <div  className="relative flex gap-5">
-      <div  className="absolute -left-12 sm:left-auto flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-lg text-gray-500 sm:relative md:bg-transparent md:text-5xl">04</div>
-      <div  className="">
-        <h3  className="text-xl font-semibold">{services?.step4.title}</h3>
-        <p  className="text-gray-600 mt-3">{services?.step4.description}</p>
-      </div>
-    </div>
-  </div>
-</div>
+    <div className="bg-white">
+      <section className="mx-auto max-w-screen-xl px-4 py-10 md:px-8">
+        <div className="mx-auto max-w-screen-xl">
+          <motion.div 
+            className="mb-10 text-center"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="mb-4 text-3xl font-bold text-blue-500 sm:text-4xl">
+              {isLoading ? "Loading Service Information..." : services?.title}
+            </h2>
+            {!isLoading && (
+              <p className="mx-auto max-w-xl text-gray-600 sm:text-lg">
+                How does {services?.title} work
+              </p>
+            )}
+          </motion.div>
 
+          {error && (
+            <div className="text-center p-4 bg-red-50 text-red-600 rounded-lg mb-8">
+              {error}
+            </div>
+          )}
 
-<section className="mx-auto py-4">
-  <div className="mx-auto flex w-full flex-col items-center justify-center sm:max-w-screen-sm md:max-w-screen-md lg:flex-row">
-    <div className="text-center">
-        <h2 className="bg-clip-text text-3xl font-extrabold text-gray-700 sm:text-5xl">Get in touch</h2>
-        <p className="bg-gradient-to-r from-pink-500 to-indigo-500 bg-clip-text text-4xl font-extrabold text-transparent sm:text-6xl">Lets take your 
-          business to the moon</p>
-        
-        <Link href={"/contact"}>
-        <p className="shadow-pink-600/30 mt-10 inline-flex h-12 items-center rounded-full bg-pink-500 px-6 py-3 text-xl
-         font-light text-white shadow-md transition hover:translate-y-1 hover:scale-105 hover:bg-pink-600 hover:shadow-lg">Contact Us</p>
-        </Link>
-        
-    </div>
-  </div>
-</section>
+          <div className="mx-auto grid max-w-screen-xl grid-cols-1 gap-8 lg:grid-cols-3">
+            <motion.div 
+              className="flex flex-col justify-center text-center sm:text-left md:pr-10"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h1 className="mb-6 text-4xl font-bold text-gray-900">How it works</h1>
+              <p className="text-gray-600">
+                These steps ensure a structured approach to {services?.title || "our service"}, 
+                providing valuable insights to support strategic decision-making and business planning.
+              </p>
+            </motion.div>
 
+            <div className="col-span-2 mt-10 grid grid-cols-1 gap-6 rounded-2xl bg-gray-50 p-8 shadow-lg md:grid-cols-2 lg:mt-0">
+              {isLoading ? (
+                <>
+                  <StepSkeleton number="01" />
+                  <StepSkeleton number="02" />
+                  <StepSkeleton number="03" />
+                  <StepSkeleton number="04" />
+                </>
+              ) : (
+                <>
+                  <ServiceStep 
+                    number="01" 
+                    title={services?.step1.title} 
+                    description={services?.step1.description} 
+                  />
+                  <ServiceStep 
+                    number="02" 
+                    title={services?.step2.title} 
+                    description={services?.step2.description} 
+                  />
+                  <ServiceStep 
+                    number="03" 
+                    title={services?.step3.title} 
+                    description={services?.step3.description} 
+                  />
+                  <ServiceStep 
+                    number="04" 
+                    title={services?.step4.title} 
+                    description={services?.step4.description} 
+                  />
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
 
-{/* 
-<div className="mx-auto my-10 max-w-lg px-4 text-gray-600 md:max-w-screen-lg">
-  <div className="mb-10 flex flex-col border-t-4 border-blue-600 pt-4 md:flex-row">
-    <h2 className="mr-auto mb-4 text-4xl font-medium lg:text-3xl">Experience of <span className="whitespace-nowrap text-blue-600 md:text-gray-600">2 Decades</span></h2>
-    <a href="#" className="text-lg font-medium underline hover:text-blue-600">Read our Story</a>
-  </div>
-  <div className="flex flex-col md:flex-row">
-    <div>
-      <p className="mb-4 md:pr-10 md:text-xl md:leading-relaxed lg:pr-28">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis omnis sint debitis sequi animi quaerat repellendus id distinctio dolores minus.</p>
-      <p className="md:pr-10 md:text-xl md:leading-relaxed lg:pr-28">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus eos quod hic perspiciatis, consectetur suscipit maxime mollitia minima. Enim consequatur ab praesentium ipsum neque dolore expedita, earum rerum reiciendis nihil, deleniti id atque consequuntur necessitatibus distinctio aliquid explicabo quo obcaecati?</p>
-    </div>
-    <p className="hidden uppercase md:block md:text-7xl">
-      Since <br />
-      <span className="whitespace-nowrap text-blue-600">20 Years</span>
-    </p>
-  </div>
-</div> */}
-
-
-  </div>
-</section>
-
+      <section className="mx-auto max-w-screen-xl px-4 py-16 md:px-8">
+        <motion.div 
+          className="mx-auto flex w-full flex-col items-center justify-center text-center"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.3 }}
+        >
+          <h2 className="mb-4 text-3xl font-bold text-gray-900 sm:text-4xl">Get in touch</h2>
+          <p className="mb-8 text-2xl font-bold text-blue-500 sm:text-3xl">
+            Let's take your business to the next level
+          </p>
+          
+          <Link href="/contact">
+            <button className="rounded-lg bg-blue-500 px-8 py-3 text-lg font-semibold text-white shadow-md transition hover:bg-blue-600 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+              Contact Us
+            </button>
+          </Link>
+        </motion.div>
+      </section>
     </div>
   )
 }

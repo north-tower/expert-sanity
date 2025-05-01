@@ -4,13 +4,15 @@ import Link from 'next/link'
 import { client } from "@/lib/sanity.client";
 import { groq } from "next-sanity";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { ArrowUpRight, Mail, Phone, MapPin, Sparkles, ExternalLink } from "lucide-react";
 
 
 const query = groq`
 *[_type == "service"]
 `;
 
-interface service {   
+interface Service {   
     description: string;
     title: string;
   _id: string;
@@ -18,7 +20,8 @@ interface service {
 }
 
 function Footer() {
-  const [services, setServices] = useState<service[]>([]);
+  const [services, setServices] = useState<Service[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const fetchData2 = async () => {
@@ -26,7 +29,7 @@ function Footer() {
         const initialServices = await client.fetch(query);
         console.log("Fetched services:", initialServices);
         setServices(initialServices);
-        
+        setIsLoaded(true);
       } catch (error) {
         console.error("Failed to fetch posts:", error);
       }
@@ -34,79 +37,219 @@ function Footer() {
 
     fetchData2();
   }, []);
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.5 }
+    }
+  };
+
   return (
-    <div>
-     
-<footer className="">
-  <div className="mx-auto grid text-gray-50 lg:grid-cols-12">
-    <div className="flex flex-col items-start border-r border-b border-slate-500 py-8 px-5
-     sm:flex-row sm:px-8 md:pt-14 lg:col-span-7 xl:pl-32 2xl:pl-40">
-     
-      <p className="pt-4 text-sm leading-6 tracking-wide sm:pl-10 sm:pt-0 text-black">Join our
-        community and stay informed with the latest updates, tips, and best practices in 
-        bookkeeping and financial management. Connect with us to ensure your businesss 
-        financial health and growth.</p>
-    </div>
-    <div className="px-5 py-8 sm:px-8 md:pt-14 lg:col-span-5 xl:pr-32 2xl:pr-40">
-      <p className="font-medium text-blue-500">Demo</p>
-      <p className="mb-4 mt-4 text-2xl sm:mb-8 sm:text-5xl text-black">Request a Demo</p>
-      <div className="flex max-w-lg rounded-full bg-white ring-orange-300 focus-within:ring">
-        <Link href="/contact">
-        <button className="rounded-full bg-blue-600 p-2 ring-orange-300 focus:ring active:scale-105 
-        md:p-5">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" 
-          stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-          </svg>
-        </button>
-        </Link>
-        
+    <div className="relative overflow-hidden bg-gradient-to-b from-white to-blue-50">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full bg-blue-200/10 mix-blend-multiply blur-3xl"></div>
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-indigo-200/10 mix-blend-multiply blur-3xl"></div>
       </div>
+
+      {/* Main footer content */}
+      <motion.footer 
+        className="relative z-10 pt-16 pb-8"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+      >
+        <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+          {/* Newsletter section */}
+          <motion.div 
+            variants={itemVariants}
+            className="mb-16 rounded-3xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 p-8 md:p-12"
+          >
+            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="max-w-2xl">
+                <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm px-4 py-1.5 mb-4">
+                  <Sparkles className="h-4 w-4 text-white" />
+                  <span className="text-sm font-medium text-white">Stay Updated</span>
+                </div>
+                <h2 className="text-3xl font-bold text-white mb-4">Join Our Community</h2>
+                <p className="text-blue-100">
+                  Stay informed with the latest updates, tips, and best practices in 
+                  bookkeeping and financial management.
+                </p>
     </div>
-    <nav aria-label="Footer Navigation" className="text-black flex flex-wrap border-t border-r border-slate-500 
-    px-5 pb-10 sm:py-8 sm:px-8 lg:col-span-7 lg:border-t-0 xl:flex-nowrap xl:space-x-16 xl:pl-32 2xl:pl-40">
-      <ul className="mt-8 mr-4 flex-grow space-y-3 whitespace-nowrap md:mt-0">
-        <li className='text-blue-500'><strong>Services</strong></li>
+        <Link href="/contact">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="group relative overflow-hidden rounded-full bg-white px-8 py-4 text-blue-600 shadow-xl transition-all duration-300 hover:shadow-blue-500/30"
+                >
+                  <span className="relative z-10 flex items-center gap-2 font-medium">
+                    Request a Demo
+                    <ArrowUpRight className="h-5 w-5 transform transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  </span>
+                </motion.button>
+        </Link>
+            </div>
+          </motion.div>
+
+          {/* Navigation grid */}
+          <motion.div 
+            variants={containerVariants}
+            className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 mb-16"
+          >
+            {/* Services column */}
+            <motion.div variants={itemVariants}>
+              <h3 className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-6">
+                Services
+              </h3>
+              <ul className="space-y-4">
         {services.map((service) => (
-  <li key={service._id} className='hover:text-blue-800'>
-    <Link href="#">
-      {service?.title}
+                  <li key={service._id}>
+                    <Link 
+                      href="#"
+                      className="group flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors"
+                    >
+                      <span className="relative">
+                        {service.title}
+                        <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
+                      </span>
+                      <ExternalLink className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
     </Link>
   </li>
 ))}
+              </ul>
+            </motion.div>
 
+            {/* Company column */}
+            <motion.div variants={itemVariants}>
+              <h3 className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-6">
+                Company
+              </h3>
+              <ul className="space-y-4">
+                {[
+                  { title: 'Why Us?', href: '/values' },
+                  { title: 'Terms of Service', href: '/terms' },
+                  { title: 'Careers', href: '/careers' }
+                ].map((item) => (
+                  <li key={item.title}>
+                    <Link 
+                      href={item.href}
+                      className="group flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors"
+                    >
+                      <span className="relative">
+                        {item.title}
+                        <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
+                      </span>
+                      <ExternalLink className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
 
-       
-       
-      </ul>
-      <ul className="mt-8 mr-4 flex-grow space-y-3 whitespace-nowrap md:mt-0">
-        <li  className='text-blue-500'><strong>Guides</strong></li>
-        <li className=' hover:text-blue-800'>
-          <Link href="/values">
-          Why Us?
+            {/* Contact column */}
+            <motion.div variants={itemVariants}>
+              <h3 className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-6">
+                Contact
+              </h3>
+              <ul className="space-y-4">
+                <li>
+                  <Link 
+                    href="mailto:contact@example.com"
+                    className="group flex items-center gap-3 text-gray-600 hover:text-blue-600 transition-colors"
+                  >
+                    <Mail className="h-5 w-5" />
+                    <span className="relative">
+                      Email Us
+                      <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="tel:+1234567890"
+                    className="group flex items-center gap-3 text-gray-600 hover:text-blue-600 transition-colors"
+                  >
+                    <Phone className="h-5 w-5" />
+                    <span className="relative">
+                      Call Us
+                      <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
+                    </span>
           </Link>
         </li>
-        <li  className=' hover:text-blue-800'>
-          <Link href="/terms">
-          Terms of Service
+                <li>
+                  <Link 
+                    href="/contact"
+                    className="group flex items-center gap-3 text-gray-600 hover:text-blue-600 transition-colors"
+                  >
+                    <MapPin className="h-5 w-5" />
+                    <span className="relative">
+                      Find Us
+                      <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
+                    </span>
           </Link>
           </li>
-        <li className=' hover:text-blue-800'><Link href="/careers"> Careers </Link> </li>
-       
       </ul>
-      <ul className="mt-8 mr-4 flex-grow space-y-3 whitespace-nowrap md:mt-0">
-        <li className='text-blue-500'><strong>Contact</strong></li>
-        <li className=' hover:text-blue-800'><Link href="/contact">Contact</Link></li>
-     
-      </ul>
-     
-    </nav>
-    <div className="border-t border-slate-500 py-4 lg:col-span-12">
-      <p className="text-center text-sm text-gray-400">(2024) North Tower.</p>
+            </motion.div>
+
+            {/* Social links column */}
+            <motion.div variants={itemVariants}>
+              <h3 className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-6">
+                Connect
+              </h3>
+              <div className="flex flex-col gap-4">
+                <p className="text-gray-600">
+                  Follow us on social media for the latest updates and insights.
+                </p>
+                <div className="flex gap-4">
+                  {/* Add your social media icons/links here */}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+
+          {/* Footer bottom */}
+          <motion.div 
+            variants={itemVariants}
+            className="border-t border-gray-200 pt-8"
+          >
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <p className="text-gray-600 text-sm">
+                © {new Date().getFullYear()} Procounts Kenya. All rights reserved.
+              </p>
+              <div className="flex gap-6">
+                <Link 
+                  href="/privacy"
+                  className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
+                >
+                  Privacy Policy
+                </Link>
+                <Link 
+                  href="/terms"
+                  className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
+                >
+                  Terms of Service
+                </Link>
     </div>
   </div>
-</footer>
-
+          </motion.div>
+        </div>
+      </motion.footer>
     </div>
   )
 }

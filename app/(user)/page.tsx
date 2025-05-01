@@ -13,6 +13,7 @@ import Tail from "@/components/Tail";
 import { client } from "@/lib/sanity.client";
 import { groq } from "next-sanity";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 interface Author {
   name: string;
@@ -86,75 +87,42 @@ export default function Home() {
   
 
   return (
-    <main >
-    <div className="max-w-8xl"> 
-    {/* <section className='snap-center'>
-      <Header2 />
-    </section> */}
+    <main className="relative overflow-hidden">
+      <div className="w-full snap-y snap-mandatory">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <section className="snap-start">
+            <Landing />
+          </section>
 
-    <section className='snap-center'>
-        <Landing />
-    </section>
-     
-    <section className='snap-center'>
-        <Details />
-    </section>
-    <section className='snap-center'>
-      <Futuro />
-    </section>
-    <section className='snap-center'>
-      <Hero />
-    </section>
-    <section className='snap-center'>
-        <Serve />
-    </section>
-    <section className='snap-center'>
-      <Grow />
-    </section>
-    <section className='snap-center'>
-      <Tail />
-    </section>
-    
-    {/* <section className='snap-center'>
-      <Footer />
-    </section>  */}
-    {/* <section className='snap-center'>
-      <About />
-    </section>  */}
-    {/* <section className='snap-center'>
-        <Details />
-    </section>
- 
-    <section className='snap-center'>
-      <Futuro />
-    </section>
-  
-    <section className='snap-center'>
-      <Hero />
-    </section>
-    <section className='snap-center'>
-        <Serve />
-    </section>
-  
-    
-    <section className='snap-center'>
-      <Grow />
-    </section> */}
-    {/* <section className='snap-center'>
-      <About />
-    </section> */}
-    {/* <section className='snap-center'>
-      <Tail />
-    </section>
-    <section className='snap-center'>
-      <Cta />
-    </section> */}
-{/* 
-    <section className='snap-center'>
-      <Footer />
-    </section> */}
-    </div>
-    
+          <section className="snap-start">
+            <Details />
+          </section>
+
+          <section className="snap-start">
+            <Futuro />
+          </section>
+
+          <section className="snap-start">
+            <Hero />
+          </section>
+
+          <section id="serve-section" className="snap-start">
+            <Serve />
+          </section>
+
+          <section className="snap-start">
+            <Grow />
+          </section>
+
+          <section className="snap-start">
+            <Tail />
+          </section>
+        </motion.div>
+      </div>
     </main>
   );
 }
