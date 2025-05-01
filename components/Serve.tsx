@@ -114,7 +114,7 @@ function Serve() {
               <div className="absolute left-1/2 -translate-x-1/2 top-0 w-4 h-4 rounded-full border-2 border-blue-500 bg-white"></div>
             </div>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-              Whether you're a small business owner, a freelancer, or part of a larger organization,
+              Whether you&apos;re a small business owner, a freelancer, or part of a larger organization,
               our solutions are designed to meet your unique financial needs.
             </p>
           </motion.div>
