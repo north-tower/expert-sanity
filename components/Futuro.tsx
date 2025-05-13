@@ -95,6 +95,9 @@ function Futuro() {
     _id: `placeholder-${i}`,
     title: "Loading...",
     description: "Loading service description...",
+    icon: undefined,
+    slug: undefined,
+    servicePoints: [],
   }));
 
   // Display placeholder during loading or actual services when loaded
