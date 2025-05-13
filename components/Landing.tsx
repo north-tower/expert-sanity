@@ -109,9 +109,7 @@ function Landing() {
                   {landingText?.mainTitle || "Cultivating"}
                 </span>
                 <br />
-                <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                  Financial Clarity
-                </span>
+              
               </h1>
               
               <div className="relative mt-8 mb-10">
