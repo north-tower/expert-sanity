@@ -107,7 +107,7 @@ function Header() {
           {/* Desktop Navigation */}
           <Popover.Group className="hidden lg:flex lg:gap-x-8">
             {/* Navigation Links */}
-            {['Home', 'Blog', 'Contact Us'].map((item) => (
+            {['Home', 'Blog', 'contact'].map((item) => (
               <Link 
                 key={item} 
                 href={item === 'Home' ? '/' : `/${item.toLowerCase().replace(' ', '-')}`}
