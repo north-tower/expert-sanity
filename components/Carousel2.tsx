@@ -112,7 +112,6 @@ export function Carousel2() {
         }}
         plugins={plugin ? [plugin as unknown as any] : []}
         className="w-full"
-        onSlideChange={handleSlideChange}
       >
         <CarouselContent className="py-4">
           {displayClients.map((client, index) => (
