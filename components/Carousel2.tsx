@@ -110,7 +110,7 @@ export function Carousel2() {
           align: "center",
           loop: true,
         }}
-        plugins={plugin ? [plugin] : []}
+        plugins={plugin ? [plugin as unknown as any] : []}
         className="w-full"
         onSlideChange={handleSlideChange}
       >
